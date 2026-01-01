@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, Menu, X, Home, BookOpen } from 'lucide-react';
+import { ChevronRight, Menu, X, Home, BookOpen, Github, Coffee } from 'lucide-react';
 import { syllabus, categoryIcons } from '../../config/syllabus';
 
 interface SidebarProps {
@@ -81,8 +81,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     to="/"
                     onClick={onClose}
                     className={`flex items-center gap-3 mx-3 mt-4 px-3 py-2.5 rounded-lg transition-all ${isActive('/')
-                            ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/30'
-                            : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]'
+                        ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/30'
+                        : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]'
                         }`}
                 >
                     <Home size={18} />
@@ -125,8 +125,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                                                     to={algo.path}
                                                     onClick={onClose}
                                                     className={`block px-3 py-2 rounded-lg text-sm transition-all ${isActive(algo.path)
-                                                            ? 'bg-indigo-500/10 text-indigo-400 font-medium'
-                                                            : 'text-[var(--color-text-muted)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]'
+                                                        ? 'bg-indigo-500/10 text-indigo-400 font-medium'
+                                                        : 'text-[var(--color-text-muted)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]'
                                                         }`}
                                                 >
                                                     {algo.name}
@@ -141,7 +141,27 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 </nav>
 
                 {/* Footer */}
-                <div className="p-4 border-t border-[var(--color-border-primary)]">
+                <div className="p-4 border-t border-[var(--color-border-primary)] space-y-3">
+                    <div className="flex gap-2">
+                        <a
+                            href="https://github.com/AhirTech1/algorithms.git"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-bg-primary)] border border-[var(--color-border-primary)] text-xs font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)] transition-colors"
+                        >
+                            <Github size={14} />
+                            <span>GitHub</span>
+                        </a>
+                        <a
+                            href="https://buymeacoffee.com/ahirtech"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-bg-primary)] border border-[var(--color-border-primary)] text-xs font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)] transition-colors"
+                        >
+                            <Coffee size={14} />
+                            <span>Support</span>
+                        </a>
+                    </div>
                     <div className="text-xs text-[var(--color-text-muted)] text-center">
                         Design & Analysis of Algorithms
                     </div>

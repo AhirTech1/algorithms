@@ -1,73 +1,51 @@
-# React + TypeScript + Vite
+# Algorithm Visualizer (BTCO13403)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive, interactive web application designed to help students master the "Design & Analysis of Algorithms" syllabus.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **20+ Algorithms Implemented**: Covering Sorting, Graphs, Dynamic Programming, Greedy, Backtracking, and String Matching.
+- **Interactive Visualizations**: Watch algorithms execute step-by-step with real-time variable updates.
+- **Code & Pseudocode**: View the exact code logic alongside the animation.
+- **Performance Metrics**: Track comparisons, swaps, and memory usage live.
+- **Complexity Analysis**: Visual graphs for Time and Space complexity.
+- **Responsive Design**: Works on desktop and mobile.
 
-## React Compiler
+## 📚 Included Algorithms
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Category | Algorithms |
+|----------|------------|
+| **Sorting** | Bubble, Selection, Insertion, Merge, Quick, Heap, Counting |
+| **Divide & Conquer** | Binary Search |
+| **Graphs** | BFS, DFS, Topological Sort |
+| **Dynamic Programming** | 0/1 Knapsack, LCS, Matrix Chain Multiplication |
+| **Greedy** | Fractional Knapsack, Job Scheduling |
+| **Backtracking** | N-Queen Problem |
+| **String Matching** | Naive, KMP, Rabin-Karp |
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **React** (Vite)
+- **TypeScript**
+- **Framer Motion** (Animations)
+- **D3.js** (visualizations)
+- **TailwindCSS** (Styling)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📦 Installation & Parsing
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Clone the repo
+   ```bash
+   git clone https://github.com/AhirTech1/algorithms.git
+   ```
+2. Install dependencies
+   ```bash
+   npm install
+   ```
+3. Run locally
+   ```bash
+   npm run dev
+   ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🤝 Contributing
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Found a bug logic error? Feel free to open an issue or submit a pull request!
