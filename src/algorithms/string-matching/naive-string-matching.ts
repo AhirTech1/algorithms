@@ -28,7 +28,7 @@ export const naiveStringMatching: AlgorithmConfig = {
         '    end for',
         'end procedure',
     ],
-    visualizerType: 'array',
+    visualizerType: 'custom',
     defaultInputSize: 10,
     minInputSize: 6,
     maxInputSize: 20,

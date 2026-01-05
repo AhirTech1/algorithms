@@ -29,7 +29,7 @@ export const rabinKarp: AlgorithmConfig = {
         '    end for',
         'end procedure',
     ],
-    visualizerType: 'array',
+    visualizerType: 'custom',
     defaultInputSize: 12,
     minInputSize: 6,
     maxInputSize: 20,

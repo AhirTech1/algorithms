@@ -5,3 +5,5 @@ export { mergeSort } from './merge-sort';
 export { quickSort } from './quick-sort';
 export { heapSort } from './heap-sort';
 export { countingSort } from './counting-sort';
+export { radixSort } from './radix-sort';
+export { bucketSort } from './bucket-sort';

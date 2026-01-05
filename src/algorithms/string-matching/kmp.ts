@@ -34,7 +34,7 @@ export const kmp: AlgorithmConfig = {
         '    end while',
         'end procedure',
     ],
-    visualizerType: 'array',
+    visualizerType: 'custom',
     defaultInputSize: 12,
     minInputSize: 6,
     maxInputSize: 20,

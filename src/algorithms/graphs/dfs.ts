@@ -22,6 +22,7 @@ function createDefaultGraph(size: number): { nodes: GraphNode[]; edges: GraphEdg
     const nodes: GraphNode[] = [];
     const edges: GraphEdge[] = [];
     const adjacency = new Map<string, string[]>();
+    const addedEdges = new Set<string>();
 
     for (let i = 0; i < size; i++) {
         nodes.push({
@@ -32,17 +33,29 @@ function createDefaultGraph(size: number): { nodes: GraphNode[]; edges: GraphEdg
         adjacency.set(String(i), []);
     }
 
-    const edgePairs = [
-        [0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [2, 6], [3, 7], [4, 7], [5, 6]
-    ];
-
-    edgePairs.slice(0, Math.min(edgePairs.length, size)).forEach(([s, t]) => {
-        if (s < size && t < size) {
+    const addEdge = (s: number, t: number) => {
+        const key = s < t ? `${s}-${t}` : `${t}-${s}`;
+        if (!addedEdges.has(key) && s !== t && s < size && t < size) {
+            addedEdges.add(key);
             edges.push({ source: String(s), target: String(t), state: 'default' });
             adjacency.get(String(s))?.push(String(t));
             adjacency.get(String(t))?.push(String(s));
         }
-    });
+    };
+
+    // First, create a spanning tree to ensure connectivity
+    for (let i = 1; i < size; i++) {
+        const parent = Math.floor(Math.random() * i);
+        addEdge(parent, i);
+    }
+
+    // Add some extra edges (about 50% more) to make it more interesting
+    const extraEdges = Math.floor(size * 0.5);
+    for (let i = 0; i < extraEdges; i++) {
+        const s = Math.floor(Math.random() * size);
+        const t = Math.floor(Math.random() * size);
+        addEdge(s, t);
+    }
 
     return { nodes, edges, adjacency };
 }

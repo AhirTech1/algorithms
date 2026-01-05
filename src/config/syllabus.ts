@@ -29,7 +29,7 @@ export const syllabus: SyllabusItem[] = [
         title: 'Greedy Algorithms',
         algorithms: [
             { id: 'fractional-knapsack', name: 'Fractional Knapsack', path: '/algorithm/fractional-knapsack' },
-            { id: 'huffman', name: 'Huffman Coding', path: '/algorithm/huffman' },
+            { id: 'huffman-coding', name: 'Huffman Coding', path: '/algorithm/huffman-coding' },
             { id: 'job-scheduling', name: 'Job Scheduling', path: '/algorithm/job-scheduling' },
             { id: 'prims', name: "Prim's MST", path: '/algorithm/prims' },
             { id: 'kruskals', name: "Kruskal's MST", path: '/algorithm/kruskals' },
