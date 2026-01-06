@@ -99,8 +99,71 @@ export const articulationPoints: AlgorithmConfig = {
         '    end for',
         'end procedure',
     ],
+    cCode: `#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+void APUtil(int graph[][MAX], int u, bool visited[], int disc[], int low[], int parent[], bool ap[], int vertices, int* time) {
+    int children = 0;
+    
+    visited[u] = true;
+    disc[u] = low[u] = ++(*time);
+    
+    for (int v = 0; v < vertices; v++) {
+        if (graph[u][v] == 1) {
+            if (!visited[v]) {
+                children++;
+                parent[v] = u;
+                APUtil(graph, v, visited, disc, low, parent, ap, vertices, time);
+                
+                low[u] = min(low[u], low[v]);
+                
+                // u is an articulation point in following cases:
+                // (1) u is root of DFS tree and has two or more children
+                if (parent[u] == -1 && children > 1)
+                    ap[u] = true;
+                
+                // (2) u is not root and low value of one of its child is more than discovery value of u
+                if (parent[u] != -1 && low[v] >= disc[u])
+                    ap[u] = true;
+            }
+            else if (v != parent[u])
+                low[u] = min(low[u], disc[v]);
+        }
+    }
+}
+
+void findArticulationPoints(int graph[][MAX], int vertices) {
+    bool visited[MAX] = {false};
+    int disc[MAX];
+    int low[MAX];
+    int parent[MAX];
+    bool ap[MAX] = {false};
+    int time = 0;
+    
+    for (int i = 0; i < vertices; i++) {
+        parent[i] = -1;
+    }
+    
+    for (int i = 0; i < vertices; i++) {
+        if (!visited[i])
+            APUtil(graph, i, visited, disc, low, parent, ap, vertices, &time);
+    }
+    
+    printf("Articulation Points: ");
+    for (int i = 0; i < vertices; i++) {
+        if (ap[i])
+            printf("%d ", i);
+    }
+    printf("\n");
+}`,
     visualizerType: 'graph',
-    defaultInputSize: 6,
+    defaultInputSize: 7,
     minInputSize: 4,
     maxInputSize: 10,
     supportsCases: false,

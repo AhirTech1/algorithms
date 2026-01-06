@@ -33,6 +33,80 @@ export const matrixChain: AlgorithmConfig = {
         '    return m[1][n]',
         'end procedure',
     ],
+    cCode: `#include <stdio.h>
+#include <limits.h>
+
+int matrixChainOrder(int p[], int n) {
+    // m[i][j] = Minimum number of scalar multiplications needed
+    // to compute the matrix A[i]A[i+1]...A[j]
+    int m[n][n];
+    int i, j, k, L, q;
+    
+    // Cost is zero when multiplying one matrix
+    for (i = 1; i < n; i++)
+        m[i][i] = 0;
+    
+    // L is chain length
+    for (L = 2; L < n; L++) {
+        for (i = 1; i < n - L + 1; i++) {
+            j = i + L - 1;
+            m[i][j] = INT_MAX;
+            
+            for (k = i; k <= j - 1; k++) {
+                // q = cost/scalar multiplications
+                q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+                
+                if (q < m[i][j])
+                    m[i][j] = q;
+            }
+        }
+    }
+    
+    return m[1][n - 1];
+}
+
+// Function to print optimal parenthesization
+void printOptimalParens(int s[][100], int i, int j) {
+    if (i == j)
+        printf("A%d", i);
+    else {
+        printf("(");
+        printOptimalParens(s, i, s[i][j]);
+        printOptimalParens(s, s[i][j] + 1, j);
+        printf(")");
+    }
+}
+
+int matrixChainOrderWithParens(int p[], int n) {
+    int m[n][n];
+    int s[100][100];  // To store split points
+    int i, j, k, L, q;
+    
+    for (i = 1; i < n; i++)
+        m[i][i] = 0;
+    
+    for (L = 2; L < n; L++) {
+        for (i = 1; i < n - L + 1; i++) {
+            j = i + L - 1;
+            m[i][j] = INT_MAX;
+            
+            for (k = i; k <= j - 1; k++) {
+                q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+                
+                if (q < m[i][j]) {
+                    m[i][j] = q;
+                    s[i][j] = k;
+                }
+            }
+        }
+    }
+    
+    printf("Optimal Parenthesization: ");
+    printOptimalParens(s, 1, n - 1);
+    printf("\n");
+    
+    return m[1][n - 1];
+}`,
     visualizerType: 'matrix',
     defaultInputSize: 4,
     minInputSize: 3,

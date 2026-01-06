@@ -92,8 +92,75 @@ export const bfs: AlgorithmConfig = {
         '    end while',
         'end procedure',
     ],
+    cCode: `#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+// Queue structure
+struct Queue {
+    int items[MAX];
+    int front;
+    int rear;
+};
+
+struct Queue* createQueue() {
+    struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
+    q->front = -1;
+    q->rear = -1;
+    return q;
+}
+
+bool isEmpty(struct Queue* q) {
+    return q->rear == -1;
+}
+
+void enqueue(struct Queue* q, int value) {
+    if (q->rear == MAX - 1)
+        return;
+    if (q->front == -1)
+        q->front = 0;
+    q->rear++;
+    q->items[q->rear] = value;
+}
+
+int dequeue(struct Queue* q) {
+    int item;
+    if (isEmpty(q))
+        return -1;
+    item = q->items[q->front];
+    q->front++;
+    if (q->front > q->rear) {
+        q->front = q->rear = -1;
+    }
+    return item;
+}
+
+void BFS(int graph[][MAX], int vertices, int startVertex) {
+    bool visited[MAX] = {false};
+    struct Queue* q = createQueue();
+    
+    visited[startVertex] = true;
+    enqueue(q, startVertex);
+    
+    printf("BFS Traversal: ");
+    
+    while (!isEmpty(q)) {
+        int currentVertex = dequeue(q);
+        printf("%d ", currentVertex);
+        
+        for (int i = 0; i < vertices; i++) {
+            if (graph[currentVertex][i] == 1 && !visited[i]) {
+                visited[i] = true;
+                enqueue(q, i);
+            }
+        }
+    }
+    printf("\n");
+}`,
     visualizerType: 'graph',
-    defaultInputSize: 8,
+    defaultInputSize: 7,
     minInputSize: 4,
     maxInputSize: 12,
     supportsCases: false,

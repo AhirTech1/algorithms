@@ -28,8 +28,38 @@ export const naiveStringMatching: AlgorithmConfig = {
         '    end for',
         'end procedure',
     ],
+    cCode: `#include <stdio.h>
+#include <string.h>
+
+void naiveStringMatching(char* text, char* pattern) {
+    int n = strlen(text);
+    int m = strlen(pattern);
+    int i, j;
+    
+    printf("Pattern found at positions: ");
+    int found = 0;
+    
+    // Slide pattern over text one by one
+    for (i = 0; i <= n - m; i++) {
+        // Check for pattern match at current position
+        for (j = 0; j < m; j++) {
+            if (text[i + j] != pattern[j])
+                break;
+        }
+        
+        // If pattern matches at position i
+        if (j == m) {
+            printf("%d ", i);
+            found = 1;
+        }
+    }
+    
+    if (!found)
+        printf("None");
+    printf("\n");
+}`,
     visualizerType: 'custom',
-    defaultInputSize: 10,
+    defaultInputSize: 20,
     minInputSize: 6,
     maxInputSize: 20,
     supportsCases: false,

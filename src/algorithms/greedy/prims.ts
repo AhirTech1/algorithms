@@ -76,6 +76,58 @@ export const prims: AlgorithmConfig = {
         "    end while",
         "end procedure",
     ],
+    cCode: `#include <limits.h>
+#include <stdbool.h>
+
+#define V 9  // Number of vertices
+
+int minKey(int key[], bool mstSet[], int vertices) {
+    int min = INT_MAX, min_index;
+    
+    for (int v = 0; v < vertices; v++)
+        if (mstSet[v] == false && key[v] < min)
+            min = key[v], min_index = v;
+    
+    return min_index;
+}
+
+void primMST(int graph[V][V], int vertices) {
+    int parent[vertices];  // Array to store MST
+    int key[vertices];     // Key values to pick minimum weight edge
+    bool mstSet[vertices]; // To represent set of vertices included in MST
+    int i, count;
+    
+    // Initialize all keys as INFINITE
+    for (i = 0; i < vertices; i++)
+        key[i] = INT_MAX, mstSet[i] = false;
+    
+    // Always include first vertex in MST
+    key[0] = 0;
+    parent[0] = -1;
+    
+    // The MST will have V vertices
+    for (count = 0; count < vertices - 1; count++) {
+        // Pick minimum key vertex from set of vertices not yet included
+        int u = minKey(key, mstSet, vertices);
+        
+        // Add picked vertex to MST Set
+        mstSet[u] = true;
+        
+        // Update key value and parent index of adjacent vertices
+        for (int v = 0; v < vertices; v++)
+            if (graph[u][v] && mstSet[v] == false && graph[u][v] < key[v])
+                parent[v] = u, key[v] = graph[u][v];
+    }
+    
+    // Print MST
+    printf("Edge \tWeight\n");
+    int totalWeight = 0;
+    for (i = 1; i < vertices; i++) {
+        printf("%d - %d \t%d\n", parent[i], i, graph[i][parent[i]]);
+        totalWeight += graph[i][parent[i]];
+    }
+    printf("Total MST weight: %d\n", totalWeight);
+}`,
     visualizerType: 'graph',
     defaultInputSize: 6,
     minInputSize: 4,

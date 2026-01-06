@@ -35,8 +35,54 @@ export const bucketSort: AlgorithmConfig = {
         '    concatenate all buckets',
         'end procedure',
     ],
+    cCode: `#include <stdlib.h>
+
+void insertionSort(float arr[], int n) {
+    int i, j;
+    float key;
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+void bucketSort(float arr[], int n) {
+    // Create n empty buckets
+    float** buckets = (float**)malloc(n * sizeof(float*));
+    int* bucketSizes = (int*)calloc(n, sizeof(int));
+    int i, j;
+    
+    for (i = 0; i < n; i++)
+        buckets[i] = (float*)malloc(n * sizeof(float));
+    
+    // Put array elements in different buckets
+    for (i = 0; i < n; i++) {
+        int bi = n * arr[i];
+        buckets[bi][bucketSizes[bi]++] = arr[i];
+    }
+    
+    // Sort individual buckets
+    for (i = 0; i < n; i++)
+        insertionSort(buckets[i], bucketSizes[i]);
+    
+    // Concatenate all buckets into arr
+    int index = 0;
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < bucketSizes[i]; j++)
+            arr[index++] = buckets[i][j];
+        free(buckets[i]);
+    }
+    
+    free(buckets);
+    free(bucketSizes);
+}`,
     visualizerType: 'array',
-    defaultInputSize: 10,
+    defaultInputSize: 12,
     minInputSize: 5,
     maxInputSize: 20,
     supportsCases: false,

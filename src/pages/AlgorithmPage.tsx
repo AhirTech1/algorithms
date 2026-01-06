@@ -686,6 +686,25 @@ export function AlgorithmPage() {
                             />
                         )}
                     </div>
+
+                    {/* C Code Implementation */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="bg-[var(--color-bg-secondary)] rounded-xl border border-[var(--color-border-primary)] 
+                       overflow-hidden"
+                    >
+                        <div className="px-4 py-3 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 
+                        border-b border-[var(--color-border-primary)]">
+                            <h3 className="text-sm font-semibold text-emerald-400">C Implementation</h3>
+                        </div>
+                        <div className="p-4 max-h-96 overflow-y-auto">
+                            <pre className="text-sm text-[var(--color-text-primary)] font-mono">
+                                <code className="language-c">{algorithm.cCode}</code>
+                            </pre>
+                        </div>
+                    </motion.div>
                 </div>
 
                 {/* Right column - Pseudocode and metrics */}

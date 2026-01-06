@@ -47,6 +47,21 @@ export const insertionSort: AlgorithmConfig = {
         '    end for',
         'end procedure',
     ],
+    cCode: `void insertionSort(int arr[], int n) {
+    int i, key, j;
+    
+    for (i = 1; i < n; i++) {
+        key = arr[i];
+        j = i - 1;
+        
+        // Move elements greater than key one position ahead
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j = j - 1;
+        }
+        arr[j + 1] = key;
+    }
+}`,
     visualizerType: 'array',
     defaultInputSize: 10,
     minInputSize: 5,

@@ -104,6 +104,84 @@ export const kruskals: AlgorithmConfig = {
         "    return MST",
         "end procedure",
     ],
+    cCode: `#include <stdlib.h>
+
+typedef struct {
+    int src, dest, weight;
+} Edge;
+
+typedef struct {
+    int parent;
+    int rank;
+} Subset;
+
+int compare(const void* a, const void* b) {
+    Edge* edge1 = (Edge*)a;
+    Edge* edge2 = (Edge*)b;
+    return edge1->weight - edge2->weight;
+}
+
+int find(Subset subsets[], int i) {
+    if (subsets[i].parent != i)
+        subsets[i].parent = find(subsets, subsets[i].parent);
+    return subsets[i].parent;
+}
+
+void Union(Subset subsets[], int x, int y) {
+    int xroot = find(subsets, x);
+    int yroot = find(subsets, y);
+    
+    if (subsets[xroot].rank < subsets[yroot].rank)
+        subsets[xroot].parent = yroot;
+    else if (subsets[xroot].rank > subsets[yroot].rank)
+        subsets[yroot].parent = xroot;
+    else {
+        subsets[yroot].parent = xroot;
+        subsets[xroot].rank++;
+    }
+}
+
+void kruskalMST(Edge edges[], int V, int E) {
+    Edge result[V];
+    int e = 0, i = 0;
+    
+    // Sort edges by weight
+    qsort(edges, E, sizeof(Edge), compare);
+    
+    // Allocate memory for subsets
+    Subset* subsets = (Subset*)malloc(V * sizeof(Subset));
+    
+    // Initialize subsets
+    for (int v = 0; v < V; v++) {
+        subsets[v].parent = v;
+        subsets[v].rank = 0;
+    }
+    
+    // Number of edges in MST will be V-1
+    while (e < V - 1 && i < E) {
+        Edge next_edge = edges[i++];
+        
+        int x = find(subsets, next_edge.src);
+        int y = find(subsets, next_edge.dest);
+        
+        // If including this edge doesn't cause cycle
+        if (x != y) {
+            result[e++] = next_edge;
+            Union(subsets, x, y);
+        }
+    }
+    
+    // Print MST
+    printf("Edge \tWeight\n");
+    int totalWeight = 0;
+    for (i = 0; i < e; i++) {
+        printf("%d - %d \t%d\n", result[i].src, result[i].dest, result[i].weight);
+        totalWeight += result[i].weight;
+    }
+    printf("Total MST weight: %d\n", totalWeight);
+    
+    free(subsets);
+}`,
     visualizerType: 'graph',
     defaultInputSize: 6,
     minInputSize: 4,

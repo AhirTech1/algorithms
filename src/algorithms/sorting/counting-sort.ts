@@ -38,8 +38,43 @@ export const countingSort: AlgorithmConfig = {
         '    end for',
         'end procedure',
     ],
+    cCode: `void countingSort(int arr[], int n) {
+    int i, max = arr[0];
+    
+    // Find maximum element
+    for (i = 1; i < n; i++) {
+        if (arr[i] > max)
+            max = arr[i];
+    }
+    
+    // Create count array
+    int count[max + 1];
+    int output[n];
+    
+    // Initialize count array
+    for (i = 0; i <= max; i++)
+        count[i] = 0;
+    
+    // Store count of each element
+    for (i = 0; i < n; i++)
+        count[arr[i]]++;
+    
+    // Cumulative count
+    for (i = 1; i <= max; i++)
+        count[i] += count[i - 1];
+    
+    // Build output array
+    for (i = n - 1; i >= 0; i--) {
+        output[count[arr[i]] - 1] = arr[i];
+        count[arr[i]]--;
+    }
+    
+    // Copy output to original array
+    for (i = 0; i < n; i++)
+        arr[i] = output[i];
+}`,
     visualizerType: 'array',
-    defaultInputSize: 10,
+    defaultInputSize: 15,
     minInputSize: 5,
     maxInputSize: 20,
     supportsCases: false,

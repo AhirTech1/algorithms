@@ -29,8 +29,69 @@ export const rabinKarp: AlgorithmConfig = {
         '    end for',
         'end procedure',
     ],
+    cCode: `#include <stdio.h>
+#include <string.h>
+
+#define d 256  // Number of characters in input alphabet
+
+void rabinKarpSearch(char* pattern, char* text, int q) {
+    int M = strlen(pattern);
+    int N = strlen(text);
+    int i, j;
+    int p = 0;  // hash value for pattern
+    int t = 0;  // hash value for text
+    int h = 1;
+    
+    // The value of h would be "pow(d, M-1) % q"
+    for (i = 0; i < M - 1; i++)
+        h = (h * d) % q;
+    
+    // Calculate hash value of pattern and first window of text
+    for (i = 0; i < M; i++) {
+        p = (d * p + pattern[i]) % q;
+        t = (d * t + text[i]) % q;
+    }
+    
+    printf("Pattern found at positions: ");
+    int found = 0;
+    
+    // Slide the pattern over text one by one
+    for (i = 0; i <= N - M; i++) {
+        // Check if hash values match
+        if (p == t) {
+            // Check characters one by one
+            for (j = 0; j < M; j++) {
+                if (text[i + j] != pattern[j])
+                    break;
+            }
+            
+            if (j == M) {
+                printf("%d ", i);
+                found = 1;
+            }
+        }
+        
+        // Calculate hash value for next window of text
+        if (i < N - M) {
+            t = (d * (t - text[i] * h) + text[i + M]) % q;
+            
+            // We might get negative value of t, converting it to positive
+            if (t < 0)
+                t = (t + q);
+        }
+    }
+    
+    if (!found)
+        printf("None");
+    printf("\n");
+}
+
+void searchPattern(char* text, char* pattern) {
+    int q = 101;  // A prime number
+    rabinKarpSearch(pattern, text, q);
+}`,
     visualizerType: 'custom',
-    defaultInputSize: 12,
+    defaultInputSize: 20,
     minInputSize: 6,
     maxInputSize: 20,
     supportsCases: false,

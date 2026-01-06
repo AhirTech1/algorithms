@@ -47,8 +47,46 @@ export const radixSort: AlgorithmConfig = {
         '    copy output to arr',
         'end procedure',
     ],
+    cCode: `int getMax(int arr[], int n) {
+    int max = arr[0];
+    for (int i = 1; i < n; i++)
+        if (arr[i] > max)
+            max = arr[i];
+    return max;
+}
+
+void countSort(int arr[], int n, int exp) {
+    int output[n];
+    int count[10] = {0};
+    
+    // Store count of occurrences
+    for (int i = 0; i < n; i++)
+        count[(arr[i] / exp) % 10]++;
+    
+    // Change count[i] so it contains actual position
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+    
+    // Build output array
+    for (int i = n - 1; i >= 0; i--) {
+        output[count[(arr[i] / exp) % 10] - 1] = arr[i];
+        count[(arr[i] / exp) % 10]--;
+    }
+    
+    // Copy output to arr
+    for (int i = 0; i < n; i++)
+        arr[i] = output[i];
+}
+
+void radixSort(int arr[], int n) {
+    int m = getMax(arr, n);
+    
+    // Do counting sort for every digit
+    for (int exp = 1; m / exp > 0; exp *= 10)
+        countSort(arr, n, exp);
+}`,
     visualizerType: 'array',
-    defaultInputSize: 10,
+    defaultInputSize: 12,
     minInputSize: 5,
     maxInputSize: 20,
     supportsCases: false,

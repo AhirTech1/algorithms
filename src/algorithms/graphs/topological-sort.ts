@@ -68,6 +68,80 @@ export const topologicalSort: AlgorithmConfig = {
         '    push v to stack',
         'end procedure',
     ],
+    cCode: `#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+void topologicalSortUtil(int graph[][MAX], int v, bool visited[], int stack[], int* top, int vertices) {
+    visited[v] = true;
+    
+    for (int i = 0; i < vertices; i++) {
+        if (graph[v][i] == 1 && !visited[i])
+            topologicalSortUtil(graph, i, visited, stack, top, vertices);
+    }
+    
+    stack[++(*top)] = v;
+}
+
+void topologicalSort(int graph[][MAX], int vertices) {
+    int stack[MAX];
+    int top = -1;
+    bool visited[MAX] = {false};
+    
+    // Call recursive helper for all vertices
+    for (int i = 0; i < vertices; i++) {
+        if (!visited[i])
+            topologicalSortUtil(graph, i, visited, stack, &top, vertices);
+    }
+    
+    printf("Topological Sort: ");
+    while (top >= 0) {
+        printf("%d ", stack[top--]);
+    }
+    printf("\n");
+}
+
+// Kahn's Algorithm (BFS approach)
+void topologicalSortKahn(int graph[][MAX], int vertices) {
+    int inDegree[MAX] = {0};
+    int queue[MAX];
+    int front = 0, rear = 0;
+    int count = 0;
+    
+    // Calculate in-degree for each vertex
+    for (int i = 0; i < vertices; i++)
+        for (int j = 0; j < vertices; j++)
+            if (graph[i][j] == 1)
+                inDegree[j]++;
+    
+    // Enqueue vertices with in-degree 0
+    for (int i = 0; i < vertices; i++)
+        if (inDegree[i] == 0)
+            queue[rear++] = i;
+    
+    printf("Topological Sort (Kahn): ");
+    
+    while (front < rear) {
+        int u = queue[front++];
+        printf("%d ", u);
+        count++;
+        
+        // Decrease in-degree of adjacent vertices
+        for (int v = 0; v < vertices; v++) {
+            if (graph[u][v] == 1) {
+                inDegree[v]--;
+                if (inDegree[v] == 0)
+                    queue[rear++] = v;
+            }
+        }
+    }
+    
+    if (count != vertices)
+        printf("\nGraph has a cycle!");
+    printf("\n");
+}`,
     visualizerType: 'graph',
     defaultInputSize: 6,
     minInputSize: 4,

@@ -88,8 +88,77 @@ export const tsp: AlgorithmConfig = {
         '    end for',
         'end procedure',
     ],
+    cCode: `#include <stdio.h>
+#include <limits.h>
+#include <stdbool.h>
+
+#define V 4  // Number of vertices
+
+int travllingSalesmanProblem(int graph[][V], bool visited[], int currPos, int n, int count, int cost, int minCost) {
+    // If last node is reached and it has a link to the starting node
+    if (count == n && graph[currPos][0]) {
+        minCost = (cost + graph[currPos][0] < minCost) ? cost + graph[currPos][0] : minCost;
+        return minCost;
+    }
+    
+    // Loop to traverse the adjacency list of currPos node
+    for (int i = 0; i < n; i++) {
+        if (!visited[i] && graph[currPos][i]) {
+            visited[i] = true;
+            minCost = travllingSalesmanProblem(graph, visited, i, n, count + 1, cost + graph[currPos][i], minCost);
+            
+            // Backtrack
+            visited[i] = false;
+        }
+    }
+    
+    return minCost;
+}
+
+// Branch and Bound approach with cost matrix
+int tspBranchBound(int graph[][V], int n) {
+    bool visited[V] = {false};
+    visited[0] = true;
+    
+    int minCost = travllingSalesmanProblem(graph, visited, 0, n, 1, 0, INT_MAX);
+    return minCost;
+}
+
+// Dynamic Programming approach (Held-Karp)
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+int tspDP(int dist[][V], int mask, int pos, int dp[][1 << V], int n) {
+    if (mask == ((1 << n) - 1))
+        return dist[pos][0];
+    
+    if (dp[pos][mask] != -1)
+        return dp[pos][mask];
+    
+    int ans = INT_MAX;
+    
+    for (int city = 0; city < n; city++) {
+        if ((mask & (1 << city)) == 0) {
+            int newAns = dist[pos][city] + tspDP(dist, mask | (1 << city), city, dp, n);
+            ans = min(ans, newAns);
+        }
+    }
+    
+    return dp[pos][mask] = ans;
+}
+
+int solveTSP(int dist[][V], int n) {
+    int dp[V][1 << V];
+    
+    for (int i = 0; i < V; i++)
+        for (int j = 0; j < (1 << V); j++)
+            dp[i][j] = -1;
+    
+    return tspDP(dist, 1, 0, dp, n);
+}`,
     visualizerType: 'graph',
-    defaultInputSize: 4,
+    defaultInputSize: 5,
     minInputSize: 3,
     maxInputSize: 6,
     supportsCases: false,

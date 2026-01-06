@@ -89,8 +89,56 @@ export const dfs: AlgorithmConfig = {
         '    end while',
         'end procedure',
     ],
+    cCode: `#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+void DFSUtil(int graph[][MAX], int vertices, int vertex, bool visited[]) {
+    visited[vertex] = true;
+    printf("%d ", vertex);
+    
+    for (int i = 0; i < vertices; i++) {
+        if (graph[vertex][i] == 1 && !visited[i])
+            DFSUtil(graph, vertices, i, visited);
+    }
+}
+
+void DFS(int graph[][MAX], int vertices, int startVertex) {
+    bool visited[MAX] = {false};
+    
+    printf("DFS Traversal: ");
+    DFSUtil(graph, vertices, startVertex, visited);
+    printf("\n");
+}
+
+// Iterative DFS using stack
+void DFSIterative(int graph[][MAX], int vertices, int startVertex) {
+    bool visited[MAX] = {false};
+    int stack[MAX];
+    int top = -1;
+    
+    stack[++top] = startVertex;
+    
+    printf("DFS Traversal (Iterative): ");
+    
+    while (top >= 0) {
+        int vertex = stack[top--];
+        
+        if (!visited[vertex]) {
+            printf("%d ", vertex);
+            visited[vertex] = true;
+        }
+        
+        for (int i = vertices - 1; i >= 0; i--) {
+            if (graph[vertex][i] == 1 && !visited[i])
+                stack[++top] = i;
+        }
+    }
+    printf("\n");
+}`,
     visualizerType: 'graph',
-    defaultInputSize: 8,
+    defaultInputSize: 7,
     minInputSize: 4,
     maxInputSize: 12,
     supportsCases: false,

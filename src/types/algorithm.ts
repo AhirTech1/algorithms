@@ -64,6 +64,7 @@ export interface AlgorithmConfig {
     description: string;
     complexity: Complexity;
     pseudocode: string[];
+    cCode: string; // C implementation code
     visualizerType: 'array' | 'graph' | 'tree' | 'matrix' | 'custom';
     defaultInputSize: number;
     minInputSize: number;

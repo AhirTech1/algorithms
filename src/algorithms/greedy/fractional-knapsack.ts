@@ -37,6 +37,7 @@ export const fractionalKnapsack: AlgorithmConfig = {
         '    return totalValue',
         'end procedure',
     ],
+    cCode: `#include <stdlib.h>\n\ntypedef struct {\n    int value;\n    int weight;\n    double ratio;\n} Item;\n\nint compare(const void* a, const void* b) {\n    Item* item1 = (Item*)a;\n    Item* item2 = (Item*)b;\n    if (item2->ratio > item1->ratio) return 1;\n    if (item2->ratio < item1->ratio) return -1;\n    return 0;\n}\n\ndouble fractionalKnapsack(int W, Item items[], int n) {\n    int i;\n    \n    // Calculate value/weight ratio for each item\n    for (i = 0; i < n; i++)\n        items[i].ratio = (double)items[i].value / items[i].weight;\n    \n    // Sort items by ratio in descending order\n    qsort(items, n, sizeof(Item), compare);\n    \n    double totalValue = 0.0;\n    int currentWeight = 0;\n    \n    for (i = 0; i < n; i++) {\n        if (currentWeight + items[i].weight <= W) {\n            // Take whole item\n            currentWeight += items[i].weight;\n            totalValue += items[i].value;\n        } else {\n            // Take fraction of item\n            int remain = W - currentWeight;\n            totalValue += items[i].value * ((double)remain / items[i].weight);\n            break;\n        }\n    }\n    \n    return totalValue;\n}`,
     visualizerType: 'array',
     defaultInputSize: 5,
     minInputSize: 3,

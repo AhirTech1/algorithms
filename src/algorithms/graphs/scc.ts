@@ -105,6 +105,73 @@ export const scc: AlgorithmConfig = {
         "    end while",
         "end procedure",
     ],
+    cCode: `#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+void fillOrder(int graph[][MAX], int v, bool visited[], int stack[], int* top, int vertices) {
+    visited[v] = true;
+    
+    for (int i = 0; i < vertices; i++) {
+        if (graph[v][i] == 1 && !visited[i])
+            fillOrder(graph, i, visited, stack, top, vertices);
+    }
+    
+    stack[++(*top)] = v;
+}
+
+void DFSUtil(int graph[][MAX], int v, bool visited[], int vertices) {
+    visited[v] = true;
+    printf("%d ", v);
+    
+    for (int i = 0; i < vertices; i++) {
+        if (graph[v][i] == 1 && !visited[i])
+            DFSUtil(graph, i, visited, vertices);
+    }
+}
+
+void transpose(int graph[][MAX], int transposed[][MAX], int vertices) {
+    for (int v = 0; v < vertices; v++) {
+        for (int i = 0; i < vertices; i++) {
+            transposed[i][v] = graph[v][i];
+        }
+    }
+}
+
+void findSCCs(int graph[][MAX], int vertices) {
+    int stack[MAX];
+    int top = -1;
+    bool visited[MAX] = {false};
+    
+    // Fill vertices in stack according to their finishing times
+    for (int i = 0; i < vertices; i++) {
+        if (!visited[i])
+            fillOrder(graph, i, visited, stack, &top, vertices);
+    }
+    
+    // Create transpose graph
+    int transposed[MAX][MAX] = {0};
+    transpose(graph, transposed, vertices);
+    
+    // Mark all vertices as not visited for second DFS
+    for (int i = 0; i < vertices; i++)
+        visited[i] = false;
+    
+    printf("Strongly Connected Components:\n");
+    int sccCount = 0;
+    
+    // Process all vertices in order defined by stack
+    while (top >= 0) {
+        int v = stack[top--];
+        
+        if (!visited[v]) {
+            printf("SCC %d: ", ++sccCount);
+            DFSUtil(transposed, v, visited, vertices);
+            printf("\n");
+        }
+    }
+}`,
     visualizerType: 'graph',
     defaultInputSize: 5,
     minInputSize: 4,
