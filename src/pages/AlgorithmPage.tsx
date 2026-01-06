@@ -179,8 +179,7 @@ export function AlgorithmPage() {
             // Strassen's Matrix Multiplication - show A, B, and C
             if (state.strassen && state.matrix) {
                 const strassen = state.strassen as { a: number[][]; b: number[][]; c: number[][]; currentOp?: string; phase: string };
-                const _matrixState = state.matrix as { m: number[][]; n: number; i?: number; j?: number; done?: boolean; title?: string };
-                void _matrixState; // Used for type checking
+                const matrixState = state.matrix as { m: number[][]; n: number; i?: number; j?: number; done?: boolean; title?: string };
 
                 return (
                     <div className="space-y-4">
