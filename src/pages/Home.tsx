@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -11,6 +12,10 @@ import {
 import { syllabus, categoryIcons, categoryColors, categoryDescriptions } from '../config/syllabus';
 
 export function Home() {
+    // Set document title for home page
+    useEffect(() => {
+        document.title = 'AlgoViz - Algorithm Visualizer | BTCO13403';
+    }, []);
     const totalAlgorithms = syllabus.reduce((acc, cat) => acc + cat.algorithms.length, 0);
 
     return (

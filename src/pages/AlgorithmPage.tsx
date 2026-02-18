@@ -74,6 +74,19 @@ export function AlgorithmPage() {
         }
     }, [algorithm]);
 
+    // Update document title based on current algorithm
+    useEffect(() => {
+        if (algorithm) {
+            document.title = `${algorithm.name} | AlgoViz`;
+        } else {
+            document.title = 'AlgoViz - Algorithm Visualizer | BTCO13403';
+        }
+
+        return () => {
+            document.title = 'AlgoViz - Algorithm Visualizer | BTCO13403';
+        };
+    }, [algorithm]);
+
     // Generate new input when size or case changes
     const regenerateInput = useCallback(() => {
         if (!algorithm) return;
